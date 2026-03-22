@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Awaiting Complaints</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Icons+Outlined&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        primary: "#337ab7",
+        "background-light": "#f4f7f9"
+      }
+    }
+  }
+}
+
+function toggleSidebar(){
+  const sidebar = document.getElementById("sidebar");
+  sidebar.classList.toggle("hidden");
+}
+</script>
+
+<style>
+body { font-family: 'Inter', sans-serif; }
+.material-icons-outlined { font-size: 18px; }
+</style>
+
+</head>
+
+<body class="bg-background-light dark:bg-[#0f172a] text-slate-800 dark:text-slate-200 min-h-screen flex flex-col">
+
+<!-- 🔵 NAVBAR -->
+<header class="h-14 bg-white dark:bg-[#111827] border-b border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between px-4">
+
+  <div class="flex items-center gap-3">
+
+    <button onclick="toggleSidebar()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded">
+      <span class="material-icons-outlined">menu</span>
+    </button>
+
+    <img src="srm-logo.png" class="h-8 hidden lg:block">
+
+    <span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase hidden lg:block">
+      Student Portal
+    </span>
+
+    <h2 class="hidden md:block text-[13px] font-semibold ml-4">
+      Faculty of Engineering and Technology, Kattankulathur
+    </h2>
+
+  </div>
+
+  <div class="flex items-center gap-4">
+
+    <button onclick="document.documentElement.classList.toggle('dark')" class="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-700">
+      <span class="material-icons-outlined dark:hidden">dark_mode</span>
+      <span class="material-icons-outlined hidden dark:block">light_mode</span>
+    </button>
+
+    <button class="flex items-center gap-1 text-sm hover:text-primary">
+      <span class="material-icons-outlined">logout</span>
+      Logout
+    </button>
+
+  </div>
+
+</header>
+
+<!-- 🔵 MAIN -->
+<div class="flex flex-1">
+
+<!-- 🔵 SIDEBAR -->
+<aside id="sidebar"
+class="w-64 bg-white dark:bg-[#111827] border-r border-slate-200 dark:border-slate-700 flex flex-col">
+
+  <div class="flex-1 overflow-y-auto p-2 space-y-1 text-sm">
+
+    <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded">
+      <span class="material-icons-outlined">dashboard</span> Dashboard
+    </a>
+
+    <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded">
+      <span class="material-icons-outlined">payments</span> Fee Payment
+    </a>
+
+    <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded">
+      <span class="material-icons-outlined">person</span> Personal Details
+    </a>
+
+    <a class="flex items-center gap-3 px-3 py-2 bg-primary/10 border-l-4 border-primary text-primary font-semibold">
+      <span class="material-icons-outlined">report_problem</span> Hostel Complaints
+    </a>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="p-3 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 text-xs">
+    <div>RA2311003011366</div>
+    <div class="font-medium">SAYANTAN GHOSAL</div>
+    <div class="text-[10px]">Thu 19-Mar-2026</div>
+  </div>
+
+</aside>
+
+<!-- 🔵 CONTENT -->
+<div class="flex-1 flex flex-col">
+
+  <!-- SUB NAV -->
+  <div class="bg-white dark:bg-[#111827] border-b border-slate-200 dark:border-slate-700 px-6">
+
+    <div class="flex gap-8 text-sm">
+
+      <a class="py-4 text-slate-500 dark:text-slate-400 hover:text-primary cursor-pointer">
+        Complaint Log
+      </a>
+
+      <a class="py-4 text-primary border-b-2 border-primary font-semibold cursor-pointer">
+        Awaiting
+      </a>
+
+      <a class="py-4 text-slate-500 dark:text-slate-400 hover:text-primary cursor-pointer">
+        Resolved
+      </a>
+
+    </div>
+
+  </div>
+
+  <main class="p-6 space-y-6">
+
+    <!-- HEADER -->
+    <div class="bg-white dark:bg-slate-800 p-4 border border-slate-200 dark:border-slate-700 rounded shadow-md">
+      <h3 class="font-semibold">Awaiting Complaints</h3>
+      <p class="text-xs text-slate-500 dark:text-slate-400">Pending complaints waiting for action</p>
+    </div>
+
+    <!-- TABLE -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded shadow-md overflow-hidden">
+
+      <table class="w-full text-sm">
+
+        <thead class="bg-slate-50 dark:bg-slate-700 text-xs uppercase text-slate-500 dark:text-slate-300">
+          <tr>
+            <th class="px-6 py-3">ID</th>
+            <th class="px-6 py-3">Category</th>
+            <th class="px-6 py-3">Subject</th>
+            <th class="px-6 py-3">Status</th>
+            <th class="px-6 py-3">Date</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-700">
+            <td class="px-6 py-3 font-mono text-xs">HC/2026/4382</td>
+            <td class="px-6 py-3">Plumbing</td>
+            <td class="px-6 py-3 font-medium">Water leakage in washroom</td>
+            <td class="px-6 py-3">
+              <span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-300 text-xs rounded-full font-semibold">
+                Pending
+              </span>
+            </td>
+            <td class="px-6 py-3 text-slate-500 dark:text-slate-400">25-Jan-2026</td>
+          </tr>
+
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-700">
+            <td class="px-6 py-3 font-mono text-xs">HC/2026/4512</td>
+            <td class="px-6 py-3">Network</td>
+            <td class="px-6 py-3 font-medium">Wi-Fi not working</td>
+            <td class="px-6 py-3">
+              <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 text-xs rounded-full font-semibold">
+                Awaiting
+              </span>
+            </td>
+            <td class="px-6 py-3 text-slate-500 dark:text-slate-400">28-Jan-2026</td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </main>
+
+</div>
+
+</div>
+
+</body>
+</html>

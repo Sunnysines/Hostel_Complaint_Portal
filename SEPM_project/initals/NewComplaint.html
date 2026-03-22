@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>New Complaint Form - Student Portal</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Material+Icons+Outlined&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#337ab7",
+                        "background-light": "#f4f7f9",
+                        "background-dark": "#0f172a",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "4px",
+                    },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        body { font-family: 'Inter', sans-serif; }
+        .material-icons-outlined { vertical-align: middle; font-size: 20px; }
+        .sidebar-scroll::-webkit-scrollbar { width: 4px; }
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 min-h-screen flex">
+    <aside
+        class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex-shrink-0 hidden lg:flex flex-col sticky top-0 h-screen">
+        <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3">
+
+            <div class="p-4">
+                <img src="srm-logo.png" alt="SRM Institute Logo" class="w-full object-contain">
+            </div>
+
+            <div>
+
+                <p class="font-bold text-[10px] text-slate-500 uppercase">Student Portal</p>
+            </div>
+        </div>
+        </div>
+        </div>
+        <nav class="flex-1 overflow-y-auto sidebar-scroll py-4">
+            <ul class="space-y-1 px-3">
+                <li><a class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        href="#"><span class="material-icons-outlined text-slate-400">dashboard</span> Dashboard</a>
+                </li>
+                <li><a class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        href="#"><span class="material-icons-outlined text-slate-400">payments</span> Fee Payment</a>
+                </li>
+                <li><a class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        href="#"><span class="material-icons-outlined text-slate-400">person</span> Personal Details</a>
+                </li>
+                <li><a class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        href="#"><span class="material-icons-outlined text-slate-400">assessment</span> Grade / Mark
+                        &amp; Credit</a></li>
+                <li><a class="flex items-center gap-3 px-3 py-2 text-sm rounded bg-primary/10 text-primary font-medium border-l-4 border-primary"
+                        href="#"><span class="material-icons-outlined text-primary">report_problem</span> Hostel
+                        Complaints</a></li>
+                <li><a class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        href="#"><span class="material-icons-outlined text-slate-400">history_edu</span> Exam
+                        Results</a></li>
+                <li><a class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        href="#"><span class="material-icons-outlined text-slate-400">calendar_today</span>
+                        Timetable</a></li>
+                <li><a class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        href="#"><span class="material-icons-outlined text-slate-400">bed</span> Hostel Booking</a></li>
+                <li><a class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        href="#"><span class="material-icons-outlined text-slate-400">bus_alert</span> Transport
+                        Details</a></li>
+                <li><a class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        href="#"><span class="material-icons-outlined text-slate-400">account_balance_wallet</span>
+                        Finance Details</a></li>
+            </ul>
+        </nav>
+        <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800">
+            <div class="text-[11px] text-slate-500 footer-subtitle">RA2311003011366</div>
+            <div class="text-[11px] text-slate-500 footer-subtitle">SAYANTAN GHOSAL</div>
+            <div class="text-[14px] font-bold dark:text-slate-300 footer-title">Thu 29-Jan-2026 22:49:26</div>
+        </div>
+    </aside>
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <header
+            class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-6 sticky top-0 z-10">
+            <div class="flex items-center gap-4">
+                <button class="lg:hidden p-2 text-slate-500"><span class="material-icons-outlined">menu</span></button>
+                <h2 class="text-primary font-bold hidden md:block">Faculty of Engineering and Technology, Kattankulathur
+                </h2>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="relative">
+                    <button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500"
+                        onclick="document.documentElement.classList.toggle('dark')">
+                        <span class="material-icons-outlined dark:hidden">dark_mode</span>
+                        <span class="material-icons-outlined hidden dark:block">light_mode</span>
+                    </button>
+                </div>
+                <button
+                    class="flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
+                    <span class="material-icons-outlined">logout</span>
+                    Logout
+                </button>
+            </div>
+        </header>
+        <div class="bg-white dark:bg-slate-900 px-6 border-b border-slate-200 dark:border-slate-800">
+            <div class="flex gap-8 overflow-x-auto no-scrollbar">
+                <button
+                    class="py-4 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary border-b-2 border-transparent whitespace-nowrap">Complaint
+                    Log</button>
+                <button
+                    class="py-4 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary border-b-2 border-transparent whitespace-nowrap">Awaiting
+                    Action</button>
+                <button
+                    class="py-4 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary border-b-2 border-transparent whitespace-nowrap">Resolved</button>
+                <button
+                    class="py-4 text-sm font-semibold text-primary border-b-2 border-primary whitespace-nowrap uppercase tracking-wide">New
+                    Complaint</button>
+            </div>
+        </div>
+        <main class="flex-1 overflow-y-auto p-6 bg-background-light dark:bg-background-dark">
+            <div class="max-w-4xl mx-auto space-y-6">
+                <div
+                    class="bg-white dark:bg-slate-900 rounded shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                    <div class="bg-primary px-6 py-4 flex items-center justify-between">
+                        <h3 class="text-white font-bold flex items-center gap-2">
+                            <span class="material-icons-outlined text-xl">add_box</span>
+                            New Complaint Form
+                        </h3>
+                    </div>
+                    <div class="p-8">
+                        <form class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="space-y-2">
+                                    <label
+                                        class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Complaint
+                                        Category <span class="text-red-500">*</span></label>
+                                    <select
+                                        class="w-full h-11 border-slate-200 dark:border-slate-800 dark:bg-slate-800 rounded text-sm focus:ring-primary focus:border-primary">
+                                        <option value="">Select Category</option>
+                                        <option value="electrical">Electrical</option>
+                                        <option value="plumbing">Plumbing</option>
+                                        <option value="carpentry">Carpentry</option>
+                                        <option value="housekeeping">Housekeeping</option>
+                                        <option value="wifi">Wi-Fi / Internet</option>
+                                        <option value="others">Others</option>
+                                    </select>
+                                </div>
+                                <div class="space-y-2">
+                                    <label
+                                        class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Subject
+                                        <span class="text-red-500">*</span></label>
+                                    <input
+                                        class="w-full h-11 border-slate-200 dark:border-slate-800 dark:bg-slate-800 rounded text-sm focus:ring-primary focus:border-primary"
+                                        placeholder="Brief subject of your complaint" type="text" />
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label
+                                    class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Description
+                                    <span class="text-red-500">*</span></label>
+                                <textarea
+                                    class="w-full border-slate-200 dark:border-slate-800 dark:bg-slate-800 rounded text-sm focus:ring-primary focus:border-primary"
+                                    placeholder="Please describe the issue in detail..." rows="5"></textarea>
+                            </div>
+                            <div class="space-y-2">
+                                <label
+                                    class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Attach
+                                    Image (Optional)</label>
+                                <div class="flex items-center justify-center w-full">
+                                    <label
+                                        class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-lg cursor-pointer bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                            <span
+                                                class="material-symbols-outlined text-slate-400 text-3xl mb-2">cloud_upload</span>
+                                            <p class="mb-1 text-sm text-slate-500 dark:text-slate-400"><span
+                                                    class="font-semibold">Click to upload</span> or drag and drop</p>
+                                            <p
+                                                class="text-xs text-slate-400 dark:text-slate-500 uppercase tracking-tighter">
+                                                PNG, JPG or JPEG (MAX. 2MB)</p>
+                                        </div>
+                                        <input class="hidden" type="file" />
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="pt-4 flex items-center gap-4">
+                                <button
+                                    class="bg-primary hover:bg-[#286090] text-white px-8 py-2.5 rounded text-sm font-bold shadow-sm transition-all flex items-center gap-2"
+                                    type="submit">
+                                    <span class="material-icons-outlined text-lg">send</span>
+                                    SUBMIT COMPLAINT
+                                </button>
+                                <button
+                                    class="px-6 py-2.5 rounded text-sm font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+                                    type="reset">
+                                    Reset
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div
+                    class="bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800/30 rounded p-5 flex gap-4">
+                    <span class="material-icons-outlined text-blue-500 mt-0.5">info</span>
+                    <div>
+                        <h5 class="text-sm font-bold text-blue-800 dark:text-blue-400 mb-2">Important Instructions</h5>
+                        <ul
+                            class="text-xs text-blue-700 dark:text-blue-500/80 list-disc list-inside space-y-1.5 leading-relaxed">
+                            <li>Complaints will be acknowledged by the warden within 24 hours of submission.</li>
+                            <li>Please provide specific details like Room Number/Bed Number for faster resolution.</li>
+                            <li>Uploading a clear photograph of the issue is highly recommended for maintenance staff.
+                            </li>
+                            <li>Once submitted, you can track the status under the 'Awaiting Action' or 'Complaint Log'
+                                tabs.</li>
+                            <li>False or misleading complaints may lead to disciplinary action as per hostel guidelines.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer
+            class="h-10 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex items-center justify-center text-[10px] text-slate-400 uppercase tracking-widest px-6 shrink-0">
+            © 2026 SRM Institute of Science and Technology. All Rights Reserved.
+        </footer>
+    </div>
+
+</body>
+
+</html>

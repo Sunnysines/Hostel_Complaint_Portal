@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Awaiting Action - Hostel Complaint Log</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Material+Icons+Outlined&amp;display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#337ab7",
+            "background-light": "#f4f7f9",
+            "background-dark": "#0f172a",
+          },
+          fontFamily: {
+            display: ["Inter", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "4px",
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .material-icons-outlined {
+      vertical-align: middle;
+      font-size: 20px;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 min-h-screen flex">
+  <aside
+    class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex-shrink-0 hidden lg:flex flex-col sticky top-0 h-screen">
+    <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3">
+      <div class="p-4">
+        <img src="srm-logo.png" alt="SRM Institute Logo" class="w-full object-contain">
+      </div>
+
+      <div> 
+
+        <p class="font-bold text-[10px] text-slate-500 uppercase">Student Portal</p>
+      </div>
+    </div>
+    <nav class="flex-1 overflow-y-auto sidebar-scroll py-4">
+      <ul class="space-y-1 px-3">
+        <li><a
+            class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            href="#"><span class="material-icons-outlined text-slate-400">dashboard</span> Dashboard</a></li>
+        <li><a
+            class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            href="#"><span class="material-icons-outlined text-slate-400">payments</span> Fee Payment</a></li>
+        <li><a
+            class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            href="#"><span class="material-icons-outlined text-slate-400">person</span> Personal Details</a></li>
+        <li><a
+            class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            href="#"><span class="material-icons-outlined text-slate-400">assessment</span> Grade / Mark &amp;
+            Credit</a></li>
+        <li><a
+            class="flex items-center gap-3 px-3 py-2 text-sm rounded bg-primary/10 text-primary font-medium border-l-4 border-primary"
+            href="#"><span class="material-icons-outlined text-primary">report_problem</span> Hostel Complaints</a></li>
+        <li><a
+            class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            href="#"><span class="material-icons-outlined text-slate-400">history_edu</span> Exam Results</a></li>
+        <li><a
+            class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            href="#"><span class="material-icons-outlined text-slate-400">calendar_today</span> Timetable</a></li>
+        <li><a
+            class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            href="#"><span class="material-icons-outlined text-slate-400">bed</span> Hostel Booking</a></li>
+        <li><a
+            class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            href="#"><span class="material-icons-outlined text-slate-400">bus_alert</span> Transport Details</a></li>
+        <li><a
+            class="flex items-center gap-3 px-3 py-2 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            href="#"><span class="material-icons-outlined text-slate-400">account_balance_wallet</span> Finance
+            Details</a></li>
+      </ul>
+    </nav>
+    <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800">
+<div class="text-[11px] text-slate-500 footer-subtitle">RA2311003011366</div>
+<div class="text-[11px] text-slate-500 footer-subtitle">SAYANTAN GHOSAL</div>
+<div class="text-[14px] font-bold dark:text-slate-300 footer-title">Thu 29-Jan-2026 22:49:26</div>
+    </div>
+  </aside>
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    <header
+      class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-6 sticky top-0 z-10">
+      <div class="flex items-center gap-4">
+        <button class="lg:hidden p-2 text-slate-500"><span class="material-icons-outlined">menu</span></button>
+        <h2 class="text-primary font-bold hidden md:block">Faculty of Engineering and Technology, Kattankulathur</h2>
+      </div>
+      <div class="flex items-center gap-6">
+        <button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition-colors"
+          onclick="document.documentElement.classList.toggle('dark')">
+          <span class="material-icons-outlined dark:hidden">dark_mode</span>
+          <span class="material-icons-outlined hidden dark:block">light_mode</span>
+        </button>
+        <button
+          class="flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
+          <span class="material-icons-outlined">logout</span> Logout
+        </button>
+      </div>
+    </header>
+    <div class="bg-white dark:bg-slate-900 px-6 border-b border-slate-200 dark:border-slate-800">
+      <div class="flex gap-8 overflow-x-auto no-scrollbar">
+        <button
+          class="py-4 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary border-b-2 border-transparent whitespace-nowrap">Complaint
+          Log</button>
+        <button class="py-4 text-sm font-semibold text-primary border-b-2 border-primary whitespace-nowrap">Awaiting
+          Action</button>
+        <button
+          class="py-4 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary border-b-2 border-transparent whitespace-nowrap">Resolved</button>
+      </div>
+    </div>
+    <main class="flex-1 overflow-y-auto p-6">
+      <div class="max-w-6xl mx-auto space-y-6">
+        <div
+          class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-4 rounded shadow-sm border border-slate-200 dark:border-slate-800">
+          <div>
+            <h3 class="font-bold text-slate-700 dark:text-slate-200">Awaiting Office Action</h3>
+            <p class="text-xs text-slate-500">View complaints currently being processed by the office staff</p>
+          </div>
+          <button
+            class="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-semibold flex items-center gap-2 transition-all">
+            <span class="material-icons-outlined text-sm">add_circle_outline</span> New Complaint
+          </button>
+        </div>
+        <div
+          class="bg-white dark:bg-slate-900 rounded shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+          <div class="bg-amber-50 dark:bg-amber-900/10 border-b border-slate-100 dark:border-slate-800 px-6 py-4">
+            <h4 class="text-sm font-bold text-amber-700 dark:text-amber-500 flex items-center gap-2">
+              <span class="material-icons-outlined text-lg">pending_actions</span> Pending Final Action
+            </h4>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr
+                  class="bg-slate-50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 uppercase text-[11px] font-bold tracking-wider">
+                  <th class="px-6 py-3 border-b dark:border-slate-800">Sl.No</th>
+                  <th class="px-6 py-3 border-b dark:border-slate-800">Complaint ID</th>
+                  <th class="px-6 py-3 border-b dark:border-slate-800">Category</th>
+                  <th class="px-6 py-3 border-b dark:border-slate-800">Subject</th>
+                  <th class="px-6 py-3 border-b dark:border-slate-800">Status</th>
+                  <th class="px-6 py-3 border-b dark:border-slate-800 text-center">Action Taken</th>
+                  <th class="px-6 py-3 border-b dark:border-slate-800">Date</th>
+                  <th class="px-6 py-3 border-b dark:border-slate-800 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                  <td class="px-6 py-4">01</td>
+                  <td class="px-6 py-4 font-mono text-xs font-semibold">HC/2026/4512</td>
+                  <td class="px-6 py-4">Network</td>
+                  <td class="px-6 py-4 font-medium">Wi-Fi connection drops frequently</td>
+                  <td class="px-6 py-4">
+                    <span
+                      class="px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-bold uppercase">Acknowledged</span>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <span class="material-icons-outlined text-red-500 text-base">cancel</span>
+                  </td>
+                  <td class="px-6 py-4 text-slate-500 whitespace-nowrap">29-Jan-2026</td>
+                  <td class="px-6 py-4 text-right">
+                    <button
+                      class="text-primary hover:underline font-semibold flex items-center justify-end gap-1 ml-auto">View
+                      Details</button>
+                  </td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                  <td class="px-6 py-4">02</td>
+                  <td class="px-6 py-4 font-mono text-xs font-semibold">HC/2026/4491</td>
+                  <td class="px-6 py-4">Electrical</td>
+                  <td class="px-6 py-4 font-medium">Ceiling light flickering in corridor</td>
+                  <td class="px-6 py-4">
+                    <span
+                      class="px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-bold uppercase">Acknowledged</span>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <span class="material-icons-outlined text-red-500 text-base">cancel</span>
+                  </td>
+                  <td class="px-6 py-4 text-slate-500 whitespace-nowrap">28-Jan-2026</td>
+                  <td class="px-6 py-4 text-right">
+                    <button
+                      class="text-primary hover:underline font-semibold flex items-center justify-end gap-1 ml-auto">View
+                      Details</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            class="p-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center text-xs text-slate-500">
+            <span>Showing 2 filtered entries</span>
+            <div class="flex gap-1">
+              <button
+                class="p-1 px-3 border dark:border-slate-800 rounded bg-slate-50 dark:bg-slate-800 disabled:opacity-50"
+                disabled>Prev</button>
+              <button class="p-1 px-3 border dark:border-slate-800 rounded bg-primary text-white">1</button>
+              <button
+                class="p-1 px-3 border dark:border-slate-800 rounded bg-slate-50 dark:bg-slate-800 disabled:opacity-50"
+                disabled>Next</button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/30 rounded p-4 flex gap-4">
+          <span class="material-icons-outlined text-amber-500">hourglass_empty</span>
+          <div>
+            <h5 class="text-sm font-bold text-amber-700 dark:text-amber-400 mb-1">Processing Status</h5>
+            <p class="text-xs text-amber-600 dark:text-amber-500/80 leading-relaxed">
+              These complaints have been received and <strong>Acknowledged</strong> by the warden. Please allow 24-48
+              hours for action taken status updates.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer
+      class="h-10 bg-slate-100 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex items-center justify-center text-[10px] text-slate-500 uppercase tracking-widest px-6">
+      © 2026 SRM Institute of Science and Technology. All Rights Reserved.
+    </footer>
+  </div>
+</body>
+
+</html>

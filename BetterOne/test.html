@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hostel Complaint Log Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Icons+Outlined&display=swap" rel="stylesheet"/>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+
+<script>
+tailwind.config = {
+darkMode: "class",
+theme: {
+extend: {
+colors: {
+primary: "#337ab7",
+"background-light": "#f4f7fb",
+"background-dark": "#0f172a"
+},
+fontFamily: {
+display: ["Inter", "sans-serif"]
+},
+boxShadow:{
+card:"0 2px 8px rgba(0,0,0,0.04)",
+cardHover:"0 8px 22px rgba(0,0,0,0.08)"
+}
+}
+}
+};
+</script>
+
+<style>
+body{
+font-family:'Inter',sans-serif;
+}
+
+.material-icons-outlined{
+vertical-align:middle;
+font-size:20px;
+}
+
+.sidebar-scroll::-webkit-scrollbar{
+width:4px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb{
+background:#cbd5e1;
+border-radius:10px;
+}
+
+.no-scrollbar::-webkit-scrollbar{
+display:none;
+}
+</style>
+
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-700 dark:text-slate-200 min-h-screen flex tracking-tight">
+
+<!-- SIDEBAR -->
+<aside class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex-shrink-0 hidden lg:flex flex-col sticky top-0 h-screen shadow-sm">
+
+<div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3">
+<div class="p-2">
+<a class="navbar-brand flex flex-col items-center" href="#">
+<img src="srm-logo.png" alt="SRM Logo" class="h-10 object-contain"/>
+<font style="font-size:9pt;" class="text-slate-500 mt-1">Student Portal</font>
+</a>
+</div>
+</div>
+
+<nav class="flex-1 overflow-y-auto sidebar-scroll py-4">
+
+<ul class="space-y-1 px-3 text-[13px]">
+
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-300">
+<span class="material-icons-outlined text-slate-400">dashboard</span>
+Dashboard
+</a>
+</li>
+
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-300">
+<span class="material-icons-outlined text-slate-400">payments</span>
+Fee Payment
+</a>
+</li>
+
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-300">
+<span class="material-icons-outlined text-slate-400">person</span>
+Personal Details
+</a>
+</li>
+
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-300">
+<span class="material-icons-outlined text-slate-400">assessment</span>
+Grade / Mark & Credit
+</a>
+</li>
+
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md bg-primary/10 text-primary font-semibold border-l-4 border-primary shadow-sm">
+<span class="material-icons-outlined text-primary">report_problem</span>
+Hostel Complaints
+</a>
+</li>
+
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-300">
+<span class="material-icons-outlined text-slate-400">history_edu</span>
+Exam Results
+</a>
+</li>
+
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-300">
+<span class="material-icons-outlined text-slate-400">calendar_today</span>
+Timetable
+</a>
+</li>
+
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-300">
+<span class="material-icons-outlined text-slate-400">bed</span>
+Hostel Booking
+</a>
+</li>
+
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-300">
+<span class="material-icons-outlined text-slate-400">bus_alert</span>
+Transport Details
+</a>
+</li>
+
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-300">
+<span class="material-icons-outlined text-slate-400">account_balance_wallet</span>
+Finance Details
+</a>
+</li>
+
+</ul>
+</nav>
+
+<div class="p-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800">
+
+<div class="text-[11px] text-slate-500 font-medium">
+RA2311003011366
+</div>
+
+<div class="text-[13px] font-semibold text-slate-700 dark:text-slate-300">
+SAYANTAN GHOSAL
+</div>
+
+<div class="text-[10px] text-slate-400 mt-1">
+Thu 29-Jan-2026 22:49:26
+</div>
+
+</div>
+
+</aside>
+
+<!-- MAIN AREA -->
+<div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+
+<!-- HEADER -->
+<header class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-6 sticky top-0 z-10 shadow-sm">
+
+<div class="flex items-center gap-4">
+
+<button class="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded transition">
+<span class="material-icons-outlined">menu</span>
+</button>
+
+<h2 class="text-primary font-semibold tracking-tight hidden md:block">
+Faculty of Engineering and Technology, Kattankulathur
+</h2>
+
+</div>
+
+<div class="flex items-center gap-6">
+
+<button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+<span class="material-icons-outlined dark:hidden">dark_mode</span>
+<span class="material-icons-outlined hidden dark:block">light_mode</span>
+</button>
+
+<button class="flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-primary transition duration-300">
+<span class="material-icons-outlined">logout</span>
+Logout
+</button>
+
+</div>
+
+</header>
+
+<!-- TABS -->
+<div class="bg-white dark:bg-slate-900 px-6 border-b border-slate-200 dark:border-slate-800">
+
+<div class="flex gap-8 overflow-x-auto no-scrollbar text-[13px]">
+
+<button class="py-4 font-semibold text-primary border-b-2 border-primary whitespace-nowrap">
+Complaint Log
+</button>
+
+<button class="py-4 font-medium text-slate-500 hover:text-primary border-b-2 border-transparent whitespace-nowrap transition">
+Awaiting Action
+</button>
+
+<button class="py-4 font-medium text-slate-500 hover:text-primary border-b-2 border-transparent whitespace-nowrap transition">
+Resolved
+</button>
+
+</div>
+
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="flex-1 overflow-y-auto p-6">
+
+<div class="max-w-6xl mx-auto space-y-6">
+
+<!-- HEADER CARD -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-5 rounded-lg shadow-card border border-slate-200 dark:border-slate-800 hover:shadow-cardHover transition">
+
+<div>
+<h3 class="font-semibold text-slate-800 dark:text-slate-200 text-[15px]">
+Hostel Complaint Log
+</h3>
+
+<p class="text-xs text-slate-500 mt-1">
+Track and manage your hostel-related issues
+</p>
+</div>
+
+<button class="bg-primary hover:bg-blue-700 active:scale-[0.98] text-white px-4 py-2 rounded-md text-sm font-semibold flex items-center gap-2 transition-all duration-300 shadow-sm">
+
+<span class="material-icons-outlined text-sm">add_circle_outline</span>
+New Complaint
+
+</button>
+
+</div>
+
+<!-- TABLE -->
+<div class="bg-white dark:bg-slate-900 rounded-lg shadow-card border border-slate-200 dark:border-slate-800 overflow-hidden">
+
+<div class="bg-primary/5 dark:bg-primary/10 border-b border-slate-100 dark:border-slate-800 px-6 py-4">
+
+<h4 class="text-sm font-semibold text-primary flex items-center gap-2">
+
+<span class="material-icons-outlined text-lg">list_alt</span>
+Recent Complaints
+
+</h4>
+
+</div>
+
+<div class="overflow-x-auto">
+
+<table class="w-full text-left border-collapse text-[13px]">
+
+<thead>
+
+<tr class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 uppercase text-[11px] font-semibold tracking-wider">
+
+<th class="px-6 py-3">Sl.No</th>
+<th class="px-6 py-3">Complaint ID</th>
+<th class="px-6 py-3">Category</th>
+<th class="px-6 py-3">Subject</th>
+<th class="px-6 py-3">Status</th>
+<th class="px-6 py-3 text-center">Action Taken</th>
+<th class="px-6 py-3">Date</th>
+<th class="px-6 py-3 text-right">Action</th>
+
+</tr>
+
+</thead>
+
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition">
+
+<td class="px-6 py-4">01</td>
+
+<td class="px-6 py-4 font-mono text-xs font-semibold">
+HC/2026/4491
+</td>
+
+<td class="px-6 py-4">Electrical</td>
+
+<td class="px-6 py-4 font-medium">
+Fan not working in Room 402
+</td>
+
+<td class="px-6 py-4">
+
+<span class="px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-semibold uppercase tracking-wide">
+Acknowledged
+</span>
+
+</td>
+
+<td class="px-6 py-4 text-center">
+<span class="material-icons-outlined text-green-500 text-base">
+check_circle
+</span>
+</td>
+
+<td class="px-6 py-4 text-slate-500 whitespace-nowrap">
+28-Jan-2026
+</td>
+
+<td class="px-6 py-4 text-right">
+
+<button class="text-primary hover:underline font-semibold flex items-center justify-end gap-1 ml-auto">
+View Response
+</button>
+
+</td>
+
+</tr>
+
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition">
+
+<td class="px-6 py-4">02</td>
+
+<td class="px-6 py-4 font-mono text-xs font-semibold">
+HC/2026/4382
+</td>
+
+<td class="px-6 py-4">Plumbing</td>
+
+<td class="px-6 py-4 font-medium">
+Water leakage in washroom
+</td>
+
+<td class="px-6 py-4">
+
+<span class="px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 text-[10px] font-semibold uppercase">
+Pending
+</span>
+
+</td>
+
+<td class="px-6 py-4 text-center">
+<span class="material-icons-outlined text-slate-300 dark:text-slate-700 text-base">
+cancel
+</span>
+</td>
+
+<td class="px-6 py-4 text-slate-500 whitespace-nowrap">
+25-Jan-2026
+</td>
+
+<td class="px-6 py-4 text-right">
+
+<button class="text-slate-400 cursor-not-allowed font-semibold flex items-center justify-end gap-1 ml-auto" disabled>
+No Response
+</button>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</main>
+
+<footer class="h-10 bg-slate-100 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex items-center justify-center text-[10px] text-slate-500 uppercase tracking-widest px-6">
+© 2026 SRM Institute of Science and Technology. All Rights Reserved.
+</footer>
+
+</div>
+
+</body>
+</html>
