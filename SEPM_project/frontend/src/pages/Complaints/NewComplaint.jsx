@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function NewComplaint() {
   const [images, setImages] = useState([]);
+  const navigate = useNavigate();
 
-  // Mock Handle file drop
+  // Form states
+  const [category, setCategory] = useState('');
+  const [subject, setSubject] = useState('');
+  const [description, setDescription] = useState('');
+
   const onDrop = (e) => {
     e.preventDefault();
     handleFiles(e.dataTransfer.files);
@@ -15,117 +21,157 @@ export default function NewComplaint() {
       name: file.name,
       url: URL.createObjectURL(file)
     }));
-    setImages(prev => [...prev, ...mapped].slice(0, 3)); // max 3
+    setImages(prev => [...prev, ...mapped].slice(0, 3));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    // Check mandatory fields
+    if (!category || !subject || !description) {
+      alert("Please fill out all mandatory fields (Category, Subject, and Description).");
+      return;
+    }
+
+    // Success - navigate back to the log
+    navigate('/complaints');
+  };
+
+  const handleReset = () => {
+    setCategory('');
+    setSubject('');
+    setDescription('');
+    setImages([]);
   };
 
   return (
-    <div className="max-w-4xl mx-auto h-full overflow-y-auto">
-      <div className="bg-white dark:bg-slate-900 border border-[#bce8f1] rounded shadow-sm overflow-hidden text-[#31708f] mb-8">
-        
-        {/* Blue Header matching the screenshot */}
-        <div className="bg-[#d9edf7] border-b border-[#bce8f1] px-4 py-3 flex text-[#31708f]">
-          <h2 className="text-[15px] font-semibold flex items-center gap-2">
-            <span className="material-icons-outlined text-[18px]">add_box</span>
-            New Complaint Registration
-          </h2>
+    <div className="max-w-4xl mx-auto space-y-6">
+      <div className="bg-white dark:bg-slate-900 rounded shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+        <div className="bg-primary px-6 py-4 flex items-center justify-between">
+          <h3 className="text-white font-bold flex items-center gap-2">
+            <span className="material-icons-outlined text-xl">add_box</span>
+            New Complaint Form
+          </h3>
         </div>
-
-        {/* Form Body */}
-        <div className="p-5 flex flex-col gap-4 text-sm text-[#333] dark:text-slate-300">
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex flex-col gap-1">
-              <label className="font-semibold text-[13px]">Complaint Category <span className="text-red-500">*</span></label>
-              <select className="border border-[#ccc] dark:border-slate-600 bg-white dark:bg-slate-800 rounded px-3 py-1.5 focus:border-[#66afe9] outline-none shadow-inner h-8">
-                <option value="">-- Select Category --</option>
-                <option>Electrical</option>
-                <option>Plumbing</option>
-                <option>Carpentry</option>
-                <option>Internet/WiFi</option>
-                <option>Cleaning/Housekeeping</option>
-                <option>Other</option>
-              </select>
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label className="font-semibold text-[13px]">Complaint Type <span className="text-red-500">*</span></label>
-              <select className="border border-[#ccc] dark:border-slate-600 bg-white dark:bg-slate-800 rounded px-3 py-1.5 focus:border-[#66afe9] outline-none shadow-inner h-8">
-                <option value="">-- Select Type --</option>
-                <option>Room</option>
-                <option>Corridor</option>
-                <option>Washroom</option>
-                <option>Common Area</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-1 mt-2">
-            <label className="font-semibold text-[13px]">Subject <span className="text-red-500">*</span></label>
-            <input 
-              type="text" 
-              placeholder="Brief subject of the issue..."
-              className="border border-[#ccc] dark:border-slate-600 bg-white dark:bg-slate-800 rounded px-3 py-1.5 focus:border-[#66afe9] outline-none shadow-inner"
-            />
-          </div>
-
-          <div className="flex flex-col gap-1 mt-2">
-            <label className="font-semibold text-[13px]">Complaint Description <span className="text-red-500">*</span></label>
-            <textarea 
-              rows={4}
-              placeholder="Provide detailed description..."
-              className="border border-[#ccc] dark:border-slate-600 bg-white dark:bg-slate-800 rounded px-3 py-2 focus:border-[#66afe9] outline-none shadow-inner resize-y"
-            ></textarea>
-          </div>
-
-          {/* Image Upload box */}
-          <div className="flex flex-col gap-1 mt-2">
-            <label className="font-semibold text-[13px]">Attach Images (Max 3, optional)</label>
-            
-            <div 
-              onDragOver={e => e.preventDefault()}
-              onDrop={onDrop}
-              className="border-2 border-dashed border-[#ccc] dark:border-slate-600 bg-[#f9f9f9] dark:bg-slate-800 rounded-md p-6 text-center cursor-pointer hover:bg-[#f2f2f2] dark:hover:bg-slate-700 transition flex flex-col items-center justify-center gap-2 group"
-              onClick={() => document.getElementById('fileUpload').click()}
-            >
-              <input 
-                id="fileUpload" 
-                type="file" 
-                multiple 
-                accept="image/*" 
-                className="hidden" 
-                onChange={e => handleFiles(e.target.files)}
-              />
-              <span className="material-icons-outlined text-4xl text-[#aaa] group-hover:text-[#337ab7]">add_photo_alternate</span>
-              <p className="text-[#555] dark:text-slate-400">Click to upload or drag and drop images here</p>
-            </div>
-
-            {/* Thumbnail Preview container */}
-            {images.length > 0 && (
-              <div className="flex gap-3 mt-3">
-                {images.map((img, i) => (
-                  <div key={i} className="relative w-24 h-24 border border-slate-200 rounded overflow-hidden shadow-sm group">
-                    <img src={img.url} alt={img.name} className="w-full h-full object-cover" />
-                    <button 
-                      onClick={(e) => { e.stopPropagation(); setImages(images.filter((_, idx) => idx !== i)) }}
-                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition shadow"
-                    >
-                      <span className="material-icons-outlined text-[14px] leading-none block">close</span>
-                    </button>
-                  </div>
-                ))}
+        <div className="p-8">
+          <form className="space-y-6" onSubmit={handleSubmit} onReset={handleReset}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                  Complaint Category <span className="text-red-500">*</span>
+                </label>
+                <select 
+                  className="w-full h-11 border-slate-200 dark:border-slate-800 dark:bg-slate-800 rounded text-sm focus:ring-primary focus:border-primary"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option value="">Select Category</option>
+                  <option value="electrical">Electrical</option>
+                  <option value="plumbing">Plumbing</option>
+                  <option value="carpentry">Carpentry</option>
+                  <option value="housekeeping">Housekeeping</option>
+                  <option value="wifi">Wi-Fi / Internet</option>
+                  <option value="others">Others</option>
+                </select>
               </div>
-            )}
-          </div>
+              <div className="space-y-2">
+                <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                  Subject <span className="text-red-500">*</span>
+                </label>
+                <input
+                  className="w-full h-11 border-slate-200 dark:border-slate-800 dark:bg-slate-800 rounded text-sm focus:ring-primary focus:border-primary"
+                  placeholder="Brief subject of your complaint"
+                  type="text"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                Description <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                className="w-full border-slate-200 dark:border-slate-800 dark:bg-slate-800 rounded text-sm focus:ring-primary focus:border-primary"
+                placeholder="Please describe the issue in detail..."
+                rows="5"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              ></textarea>
+            </div>
+            
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                Attach Image (Optional)
+              </label>
+              <div className="flex flex-col w-full">
+                <div 
+                  onDragOver={e => e.preventDefault()}
+                  onDrop={onDrop}
+                  className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-lg cursor-pointer bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+                  onClick={() => document.getElementById('fileUpload').click()}
+                >
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <span className="material-icons-outlined text-slate-400 text-3xl mb-2">cloud_upload</span>
+                    <p className="mb-1 text-sm text-slate-500 dark:text-slate-400">
+                      <span className="font-semibold">Click to upload</span> or drag and drop
+                    </p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 uppercase tracking-tighter">
+                      PNG, JPG or JPEG (MAX. 3)
+                    </p>
+                  </div>
+                  <input id="fileUpload" className="hidden" type="file" multiple accept="image/*" onChange={e => handleFiles(e.target.files)} />
+                </div>
 
-          <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-[#eee] dark:border-slate-700">
-            <button className="px-4 py-1.5 bg-slate-100 dark:bg-slate-700 text-[#333] dark:text-slate-200 border border-[#ccc] dark:border-slate-600 rounded shadow-sm hover:bg-slate-200 dark:hover:bg-slate-600 transition">
-              Reset
-            </button>
-            <button className="px-5 py-1.5 bg-[#5cb85c] hover:bg-[#449d44] border border-[#4cae4c] text-white rounded shadow-sm font-medium transition">
-              Submit Complaint
-            </button>
-          </div>
-
+                {images.length > 0 && (
+                  <div className="flex gap-4 mt-4">
+                    {images.map((img, i) => (
+                      <div key={i} className="relative w-24 h-24 border border-slate-200 dark:border-slate-700 rounded overflow-hidden group">
+                        <img src={img.url} className="w-full h-full object-cover" />
+                        <button 
+                          type="button"
+                          onClick={(e) => { e.stopPropagation(); setImages(images.filter((_, idx) => idx !== i)) }}
+                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition shadow"
+                        >
+                          <span className="material-icons-outlined text-[14px]">close</span>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                 )}
+              </div>
+            </div>
+            
+            <div className="pt-4 flex items-center gap-4">
+              <button
+                className="bg-primary hover:bg-[#286090] text-white px-8 py-2.5 rounded text-sm font-bold shadow-sm transition-all flex items-center gap-2"
+                type="submit"
+              >
+                <span className="material-icons-outlined text-lg">send</span> SUBMIT COMPLAINT
+              </button>
+              <button
+                className="px-6 py-2.5 rounded text-sm font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+                type="reset"
+              >
+                Reset
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <div className="bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800/30 rounded p-5 flex gap-4">
+        <span className="material-icons-outlined text-blue-500 mt-0.5">info</span>
+        <div>
+          <h5 className="text-sm font-bold text-blue-800 dark:text-blue-400 mb-2">Important Instructions</h5>
+          <ul className="text-xs text-blue-700 dark:text-blue-500/80 list-disc list-inside space-y-1.5 leading-relaxed">
+            <li>Complaints will be acknowledged by the warden within 24 hours of submission.</li>
+            <li>Please provide specific details like Room Number/Bed Number for faster resolution.</li>
+            <li>Uploading a clear photograph of the issue is highly recommended for maintenance staff.</li>
+            <li>Once submitted, you can track the status under the 'Awaiting Action' or 'Complaint Log' tabs.</li>
+            <li>False or misleading complaints may lead to disciplinary action as per hostel guidelines.</li>
+          </ul>
         </div>
       </div>
     </div>

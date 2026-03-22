@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function LogoutModal({ isOpen, onClose }) {
+  const navigate = useNavigate();
+  
   if (!isOpen) return null;
 
   return (
@@ -37,8 +40,7 @@ export default function LogoutModal({ isOpen, onClose }) {
             <button
               onClick={() => {
                 onClose();
-                // Add actual logout logic here
-                console.log('Logging out...');
+                navigate('/login');
               }}
               className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors shadow-sm"
             >

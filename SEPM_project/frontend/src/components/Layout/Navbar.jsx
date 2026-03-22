@@ -40,12 +40,12 @@ export default function Navbar({ toggleSidebar }) {
 
           <div className="flex items-center flex-shrink-0">
             <div className="flex flex-col items-center">
-              <img src="/srm-logo.png" alt="SRM" className="h-7 w-auto object-contain" />
-              <div className="text-[10px] text-slate-500 dark:text-slate-400 font-bold tracking-wide uppercase mt-0.5">Student Portal</div>
+              <img src="/srm-logo.png" alt="SRM" className="h-5 w-auto object-contain" />
+              <div className="text-[10px] text-slate-500 dark:text-slate-400 font-bold tracking-wide mt-0.5">Student Portal</div>
             </div>
           </div>
           
-          <div className="flex px-2 overflow-hidden ml-8">
+          <div className="flex px-2 overflow-hidden ml-20">
             <h1 className="text-[13px] font-semibold text-primary dark:text-blue-400 truncate">
               Faculty of Engineering and Technology, Kattankulathur
             </h1>
