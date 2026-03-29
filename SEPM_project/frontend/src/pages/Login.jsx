@@ -1,19 +1,41 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { authService } from '../services/authService';
 
 export default function Login() {
   const navigate = useNavigate();
+  const { loginContext } = useAuth();
+  
   const [netid, setNetid] = useState('');
   const [password, setPassword] = useState('');
   const [captcha, setCaptcha] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (netid || password || captcha) {
-      navigate('/complaints');
-    } else {
-      // Allows any input, but if completely blank, route anyway
-      navigate('/complaints');
+    setError('');
+
+    if (!netid || !password) {
+      setError('Please enter both NetID and Password.');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const user = await authService.login({ netid, password });
+      loginContext(user);
+      
+      if (user.role === 'Admin') {
+        navigate('/admin');
+      } else {
+        navigate('/complaints');
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,6 +84,12 @@ export default function Login() {
               <h3 className="text-xl font-bold text-primary mb-1">Student Portal</h3>
               <div className="h-1 w-12 bg-primary rounded"></div>
             </div>
+            
+            {error && (
+              <div className="mb-6 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-3 text-sm text-red-700 dark:text-red-400">
+                {error}
+              </div>
+            )}
             
             <form className="space-y-6" onSubmit={handleLogin}>
               <div className="space-y-1">
@@ -137,13 +165,25 @@ export default function Login() {
               </div>
               
               <button 
-                className="w-full flex items-center justify-center mt-8 py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200" 
+                className="w-full flex items-center justify-center mt-8 py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed" 
                 type="submit"
+                disabled={loading}
               >
-                <span className="material-icons text-sm mr-2">login</span>
-                Login
+                {loading ? (
+                  <span className="material-icons text-sm mr-2 animate-spin">autorenew</span>
+                ) : (
+                  <span className="material-icons text-sm mr-2">login</span>
+                )}
+                {loading ? 'Logging in...' : 'Login'}
               </button>
             </form>
+
+            <div className="mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
+                Don't have an account?{' '}
+                <Link to="/register" className="font-medium text-primary hover:underline">
+                    Register Now
+                </Link>
+            </div>
           </div>
         </div>
       </div>

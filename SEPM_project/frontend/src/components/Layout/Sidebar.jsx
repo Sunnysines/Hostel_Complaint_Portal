@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
-const navItems = [
+const studentNavItems = [
   { path: '/dashboard', icon: 'dashboard', label: 'Dashboard' },
   { path: '/fee-payment', icon: 'payments', label: 'Fee Payment' },
   { path: '/personal-details', icon: 'person', label: 'Personal Details' },
@@ -35,6 +36,10 @@ const navItems = [
   { path: '/placement', icon: 'work', label: 'Placement Insight Dashboard' },
 ];
 
+const adminNavItems = [
+  { path: '/admin', icon: 'admin_panel_settings', label: 'Admin Dashboard' }
+];
+
 function Clock() {
   const [time, setTime] = useState(new Date());
   useEffect(() => {
@@ -62,6 +67,10 @@ function Clock() {
 }
 
 export default function Sidebar({ isOpen }) {
+  const { currentUser } = useAuth();
+  
+  const navItems = currentUser?.role === 'Admin' ? adminNavItems : studentNavItems;
+
   return (
     <aside
       className={`shrink-0 w-[200px] flex flex-col bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 h-full sticky top-0 transition-all duration-300 ease-in-out ${
@@ -104,8 +113,8 @@ export default function Sidebar({ isOpen }) {
 
         {/* Bottom user info */}
         <div className="shrink-0 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-3 py-2">
-          <div className="text-[11px] text-slate-500 dark:text-slate-400">RA2311003011366</div>
-          <div className="text-[12px] font-semibold text-slate-700 dark:text-slate-300">SAYANTAN GHOSAL</div>
+          <div className="text-[11px] text-slate-500 dark:text-slate-400">{currentUser?.netid || 'GUEST'}</div>
+          <div className="text-[12px] font-semibold text-slate-700 dark:text-slate-300 uppercase">{currentUser?.email || 'guest@university.edu.in'}</div>
           <Clock />
         </div>
       </div>

@@ -1,7 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { complaintService } from '../../services/complaintService';
+import ComplaintDetailsModal from '../../components/ComplaintDetailsModal';
 
 export default function Resolved() {
+  const { currentUser } = useAuth();
+  const [complaints, setComplaints] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedComplaint, setSelectedComplaint] = useState(null);
+
+  useEffect(() => {
+    const fetchComplaints = async () => {
+      try {
+        const data = await complaintService.getByUser(currentUser?.netid || 'GUEST');
+        setComplaints(data.filter(c => c.status === 'Resolved'));
+      } catch (err) {
+        console.error("Failed to fetch complaints", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchComplaints();
+  }, [currentUser]);
+
+  const formatDate = (isoString) => {
+    return new Date(isoString).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
+  };
+
+  const getStatusColor = (status) => {
+    return 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400';
+  };
+
+  const getActionIcon = (status) => {
+    return <span className="material-icons-outlined text-green-500 text-base">check_circle</span>;
+  };
+
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-4 rounded shadow-sm border border-slate-200 dark:border-slate-800">
@@ -34,65 +68,52 @@ export default function Resolved() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
-              <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-                <td className="px-6 py-4">01</td>
-                <td className="px-6 py-4 font-mono text-xs font-semibold">HC/2026/4105</td>
-                <td className="px-6 py-4">Carpentry</td>
-                <td className="px-6 py-4 font-medium">Cupboard lock issue</td>
-                <td className="px-6 py-4">
-                  <span className="px-2 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-[10px] font-bold uppercase">Resolved</span>
-                </td>
-                <td className="px-6 py-4 text-center">
-                  <span className="material-icons-outlined text-green-500 text-base">check_circle</span>
-                </td>
-                <td className="px-6 py-4 text-slate-500 whitespace-nowrap">20-Jan-2026</td>
-                <td className="px-6 py-4 text-right">
-                  <button className="text-primary hover:underline font-semibold flex items-center justify-end gap-1 ml-auto">
-                    View Response
-                  </button>
-                </td>
-              </tr>
-              <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-                <td className="px-6 py-4">02</td>
-                <td className="px-6 py-4 font-mono text-xs font-semibold">HC/2026/3855</td>
-                <td className="px-6 py-4">Electrical</td>
-                <td className="px-6 py-4 font-medium">Study lamp flickering</td>
-                <td className="px-6 py-4">
-                  <span className="px-2 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-[10px] font-bold uppercase">Resolved</span>
-                </td>
-                <td className="px-6 py-4 text-center">
-                  <span className="material-icons-outlined text-green-500 text-base">check_circle</span>
-                </td>
-                <td className="px-6 py-4 text-slate-500 whitespace-nowrap">15-Jan-2026</td>
-                <td className="px-6 py-4 text-right">
-                  <button className="text-primary hover:underline font-semibold flex items-center justify-end gap-1 ml-auto">
-                    View Response
-                  </button>
-                </td>
-              </tr>
-              <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-                <td className="px-6 py-4">03</td>
-                <td className="px-6 py-4 font-mono text-xs font-semibold">HC/2026/3721</td>
-                <td className="px-6 py-4">Civil</td>
-                <td className="px-6 py-4 font-medium">Window frame repair</td>
-                <td className="px-6 py-4">
-                  <span className="px-2 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-[10px] font-bold uppercase">Resolved</span>
-                </td>
-                <td className="px-6 py-4 text-center">
-                  <span className="material-icons-outlined text-green-500 text-base">check_circle</span>
-                </td>
-                <td className="px-6 py-4 text-slate-500 whitespace-nowrap">10-Jan-2026</td>
-                <td className="px-6 py-4 text-right">
-                  <button className="text-primary hover:underline font-semibold flex items-center justify-end gap-1 ml-auto">
-                    View Response
-                  </button>
-                </td>
-              </tr>
+              {loading ? (
+                <tr><td colSpan="8" className="px-6 py-4 text-center text-slate-500">Loading complaints...</td></tr>
+              ) : complaints.length === 0 ? (
+                <tr><td colSpan="8" className="px-6 py-4 text-center text-slate-500">No resolved complaints yet.</td></tr>
+              ) : (
+                complaints.map((c, idx) => (
+                  <tr key={c.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                    <td className="px-6 py-4">{idx + 1 < 10 ? `0${idx + 1}` : idx + 1}</td>
+                    <td 
+                      className="px-6 py-4 font-mono text-xs font-semibold hover:text-primary cursor-pointer transition-colors"
+                      onClick={() => setSelectedComplaint(c)}
+                    >
+                      {c.id}
+                    </td>
+                    <td className="px-6 py-4 capitalize">{c.category}</td>
+                    <td 
+                      className="px-6 py-4 font-medium hover:text-primary cursor-pointer transition-colors"
+                      onClick={() => setSelectedComplaint(c)}
+                    >
+                      {c.subject}
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase ${getStatusColor(c.status)}`}>
+                        {c.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      {getActionIcon(c.status)}
+                    </td>
+                    <td className="px-6 py-4 text-slate-500 whitespace-nowrap">{formatDate(c.createdAt)}</td>
+                    <td className="px-6 py-4 text-right">
+                      <button 
+                        className="text-primary hover:underline font-semibold flex items-center justify-end gap-1 ml-auto"
+                        onClick={() => setSelectedComplaint(c)}
+                      >
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
         <div className="p-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center text-xs text-slate-500">
-          <span>Showing 3 resolved entries</span>
+          <span>Showing {complaints.length} resolved entries</span>
           <div className="flex gap-1">
             <button className="p-1 px-3 border dark:border-slate-800 rounded bg-slate-50 dark:bg-slate-800 disabled:opacity-50">Prev</button>
             <button className="p-1 px-3 border dark:border-slate-800 rounded bg-primary text-white">1</button>
@@ -106,10 +127,17 @@ export default function Resolved() {
         <div>
           <h5 className="text-sm font-bold text-green-700 dark:text-green-400 mb-1">Resolved Status Information</h5>
           <p className="text-xs text-green-600 dark:text-green-500/80">
-            These complaints have been verified and closed by the hostel office. You can view the specific actions taken and staff remarks by clicking 'View Response'.
+            These complaints have been verified and closed by the hostel office. You can view the specific actions taken and staff remarks by clicking 'View Details'.
           </p>
         </div>
       </div>
+
+      <ComplaintDetailsModal 
+        complaint={selectedComplaint} 
+        isOpen={!!selectedComplaint} 
+        onClose={() => setSelectedComplaint(null)} 
+        isAdmin={false} 
+      />
     </div>
   );
 }

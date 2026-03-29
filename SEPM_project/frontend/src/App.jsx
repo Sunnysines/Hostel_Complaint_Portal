@@ -8,18 +8,24 @@ import Log from './pages/Complaints/Log';
 import Awaiting from './pages/Complaints/Awaiting';
 import Resolved from './pages/Complaints/Resolved';
 import NewComplaint from './pages/Complaints/NewComplaint';
+import Register from './pages/Register';
+import AdminDashboard from './pages/Admin/Dashboard';
+import { AuthProvider } from './context/AuthContext';
 
 const Dashboard = () => <div className="p-6">Dashboard Info</div>;
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         
         <Route path="/" element={<Layout />}>
           <Route index element={<Navigate to="/complaints" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="admin" element={<AdminDashboard />} />
           
           <Route path="complaints" element={<ComplaintsLayout />}>
             <Route index element={<Log />} />
@@ -32,6 +38,7 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
   );
 }
 

@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { complaintService } from '../../services/complaintService';
 
 export default function NewComplaint() {
+  const { currentUser } = useAuth();
   const [images, setImages] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   // Form states
   const [category, setCategory] = useState('');
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
+  const [hostelName, setHostelName] = useState('');
+  const [roomNo, setRoomNo] = useState('');
 
   const onDrop = (e) => {
     e.preventDefault();
@@ -17,30 +23,57 @@ export default function NewComplaint() {
 
   const handleFiles = (files) => {
     const validImages = Array.from(files).filter(f => f.type.startsWith('image/'));
-    const mapped = validImages.map(file => ({
-      name: file.name,
-      url: URL.createObjectURL(file)
-    }));
-    setImages(prev => [...prev, ...mapped].slice(0, 3));
+    
+    // Convert to Base64 so they can be saved in LocalStorage mock DB
+    validImages.forEach(file => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImages(prev => {
+          const mapped = [...prev, { name: file.name, url: reader.result }];
+          return mapped.slice(0, 3);
+        });
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Check mandatory fields
-    if (!category || !subject || !description) {
-      alert("Please fill out all mandatory fields (Category, Subject, and Description).");
+    if (!category || !subject || !description || !hostelName || !roomNo) {
+      alert("Please fill out all mandatory fields.");
       return;
     }
 
-    // Success - navigate back to the log
-    navigate('/complaints');
+    try {
+      setIsSubmitting(true);
+      await complaintService.createComplaint({
+        category,
+        subject,
+        description,
+        hostelName,
+        roomNo,
+        images,
+        userId: currentUser?.netid || 'GUEST',
+        userEmail: currentUser?.email || 'guest@university.edu.in'
+      });
+      // Success - navigate back to the log
+      navigate('/complaints');
+    } catch (err) {
+      console.error(err);
+      alert("Failed to create complaint.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleReset = () => {
     setCategory('');
     setSubject('');
     setDescription('');
+    setHostelName('');
+    setRoomNo('');
     setImages([]);
   };
 
@@ -84,6 +117,33 @@ export default function NewComplaint() {
                   type="text"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                  Hostel Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  className="w-full h-11 border-slate-200 dark:border-slate-800 dark:bg-slate-800 rounded text-sm focus:ring-primary focus:border-primary"
+                  placeholder="e.g. Oori, Adhiyaman"
+                  type="text"
+                  value={hostelName}
+                  onChange={(e) => setHostelName(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                  Room No. <span className="text-red-500">*</span>
+                </label>
+                <input
+                  className="w-full h-11 border-slate-200 dark:border-slate-800 dark:bg-slate-800 rounded text-sm focus:ring-primary focus:border-primary"
+                  placeholder="e.g. 402, 105A"
+                  type="text"
+                  value={roomNo}
+                  onChange={(e) => setRoomNo(e.target.value)}
                 />
               </div>
             </div>
@@ -145,10 +205,16 @@ export default function NewComplaint() {
             
             <div className="pt-4 flex items-center gap-4">
               <button
-                className="bg-primary hover:bg-[#286090] text-white px-8 py-2.5 rounded text-sm font-bold shadow-sm transition-all flex items-center gap-2"
+                className="bg-primary hover:bg-[#286090] text-white px-8 py-2.5 rounded text-sm font-bold shadow-sm transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 type="submit"
+                disabled={isSubmitting}
               >
-                <span className="material-icons-outlined text-lg">send</span> SUBMIT COMPLAINT
+                {isSubmitting ? (
+                   <span className="material-icons-outlined text-lg animate-spin">autorenew</span>
+                ) : (
+                   <span className="material-icons-outlined text-lg">send</span>
+                )}
+                {isSubmitting ? 'SUBMITTING...' : 'SUBMIT COMPLAINT'}
               </button>
               <button
                 className="px-6 py-2.5 rounded text-sm font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
