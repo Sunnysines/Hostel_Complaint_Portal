@@ -37,7 +37,8 @@ const studentNavItems = [
 ];
 
 const adminNavItems = [
-  { path: '/admin', icon: 'admin_panel_settings', label: 'Admin Dashboard' }
+  { path: '/admin', icon: 'admin_panel_settings', label: 'Admin Dashboard' },
+  { path: '/admin/reports', icon: 'analytics', label: 'Analytics & Reports' }
 ];
 
 function Clock() {

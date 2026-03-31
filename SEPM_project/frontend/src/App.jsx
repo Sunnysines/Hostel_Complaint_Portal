@@ -10,13 +10,16 @@ import Resolved from './pages/Complaints/Resolved';
 import NewComplaint from './pages/Complaints/NewComplaint';
 import Register from './pages/Register';
 import AdminDashboard from './pages/Admin/Dashboard';
+import AdminReports from './pages/Admin/Reports';
 import { AuthProvider } from './context/AuthContext';
+import { Toaster } from 'react-hot-toast';
 
 const Dashboard = () => <div className="p-6">Dashboard Info</div>;
 
 function App() {
   return (
     <AuthProvider>
+      <Toaster position="top-right" />
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -26,6 +29,7 @@ function App() {
           <Route index element={<Navigate to="/complaints" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="admin" element={<AdminDashboard />} />
+          <Route path="admin/reports" element={<AdminReports />} />
           
           <Route path="complaints" element={<ComplaintsLayout />}>
             <Route index element={<Log />} />

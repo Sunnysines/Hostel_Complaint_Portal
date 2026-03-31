@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const USERS_KEY = 'sepm_users';
 const COMPLAINTS_KEY = 'sepm_complaints';
+const NOTIFICATIONS_KEY = 'sepm_notifications';
 
 // Initialize mock DB
 const initDB = () => {
@@ -10,6 +11,9 @@ const initDB = () => {
   }
   if (!localStorage.getItem(COMPLAINTS_KEY)) {
     localStorage.setItem(COMPLAINTS_KEY, JSON.stringify([]));
+  }
+  if (!localStorage.getItem(NOTIFICATIONS_KEY)) {
+    localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify([]));
   }
 };
 
@@ -62,6 +66,42 @@ export const db = {
     },
     findByUser: (netid) => {
       return db.complaints.getAll().filter(c => c.userId === netid);
+    }
+  },
+  notifications: {
+    getAll: () => JSON.parse(localStorage.getItem(NOTIFICATIONS_KEY) || '[]'),
+    save: (notifications) => localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(notifications)),
+    add: (notification) => {
+      const notifications = db.notifications.getAll();
+      const newNotif = {
+        ...notification,
+        id: `NOTIF-${uuidv4().substring(0,8).toUpperCase()}`,
+        timestamp: new Date().toISOString(),
+        isRead: false
+      };
+      notifications.unshift(newNotif);
+      db.notifications.save(notifications);
+      return newNotif;
+    },
+    markAsReadByUserAndCategory: (userId, category) => {
+      const notifications = db.notifications.getAll();
+      let changed = false;
+      notifications.forEach(n => {
+        if (n.userId === userId && n.category === category && !n.isRead) {
+          n.isRead = true;
+          changed = true;
+        }
+      });
+      if (changed) db.notifications.save(notifications);
+    },
+    getUnreadCountByUser: (userId) => {
+      const notifications = db.notifications.getAll();
+      const userNotifs = notifications.filter(n => n.userId === userId && !n.isRead);
+      const counts = { Awaiting: 0, Resolved: 0 };
+      userNotifs.forEach(n => {
+        if (counts[n.category] !== undefined) counts[n.category]++;
+      });
+      return counts;
     }
   }
 };

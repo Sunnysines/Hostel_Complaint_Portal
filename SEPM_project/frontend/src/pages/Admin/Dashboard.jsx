@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { complaintService } from '../../services/complaintService';
 import ComplaintDetailsModal from '../../components/ComplaintDetailsModal';
+import AdminResolveModal from '../../components/AdminResolveModal';
+import { toast } from 'react-hot-toast';
 
 export default function Dashboard() {
   const { currentUser } = useAuth();
@@ -9,6 +11,9 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState(null);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
+  const [resolvingComplaint, setResolvingComplaint] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 6;
 
   const fetchComplaints = async () => {
     try {
@@ -25,15 +30,34 @@ export default function Dashboard() {
     fetchComplaints();
   }, []);
 
-  const handleStatusChange = async (id, newStatus) => {
+  const handleStatusChange = async (c, newStatus) => {
+    if (newStatus === 'Resolved') {
+      setResolvingComplaint(c);
+      return;
+    }
+
     try {
-      setUpdatingId(id);
-      await complaintService.updateStatus(id, newStatus, `Status updated to ${newStatus} by Admin`);
+      setUpdatingId(c.id);
+      await complaintService.updateStatus(c.id, newStatus, `Status updated to ${newStatus} by Admin`);
+      toast.success(`Complaint ${c.id} updated to ${newStatus}`);
       await fetchComplaints();
     } catch (err) {
-      alert("Failed to update status");
+      toast.error("Failed to update status");
     } finally {
       setUpdatingId(null);
+    }
+  };
+
+  const confirmResolution = async (complaintId, message, image) => {
+    try {
+      setUpdatingId(complaintId);
+      await complaintService.updateStatus(complaintId, 'Resolved', message, image);
+      await fetchComplaints();
+    } catch (err) {
+      throw err;
+    } finally {
+      setUpdatingId(null);
+      setResolvingComplaint(null);
     }
   };
 
@@ -46,6 +70,9 @@ export default function Dashboard() {
     if (status === 'Pending') return 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400';
     return 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'; 
   };
+
+  const totalPages = Math.ceil(complaints.length / ITEMS_PER_PAGE);
+  const currentComplaints = complaints.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
@@ -82,7 +109,7 @@ export default function Dashboard() {
               ) : complaints.length === 0 ? (
                 <tr><td colSpan="7" className="px-6 py-4 text-center text-slate-500">No complaints registered yet.</td></tr>
               ) : (
-                complaints.map((c) => (
+                currentComplaints.map((c) => (
                   <tr key={c.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
                     <td 
                       className="px-6 py-4 font-mono text-xs font-semibold hover:text-primary cursor-pointer transition-colors"
@@ -108,7 +135,7 @@ export default function Dashboard() {
                       <select 
                         disabled={updatingId === c.id}
                         value={c.status}
-                        onChange={(e) => handleStatusChange(c.id, e.target.value)}
+                        onChange={(e) => handleStatusChange(c, e.target.value)}
                         className="text-xs border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded p-1 focus:ring-primary focus:border-primary disabled:opacity-50"
                       >
                         <option value="Pending">Pending</option>
@@ -124,7 +151,20 @@ export default function Dashboard() {
           </table>
         </div>
         <div className="p-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center text-xs text-slate-500">
-          <span>Total {complaints.length} complaints</span>
+          <span>
+            Showing {complaints.length === 0 ? 0 : (currentPage - 1) * ITEMS_PER_PAGE + 1} to {Math.min(currentPage * ITEMS_PER_PAGE, complaints.length)} of {complaints.length} complaints
+          </span>
+          <div className="flex gap-1">
+            <button 
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="p-1 px-3 border dark:border-slate-800 rounded bg-slate-50 dark:bg-slate-800 disabled:opacity-50 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">Prev</button>
+            <button className="p-1 px-3 border dark:border-slate-800 rounded bg-primary text-white font-semibold">{currentPage}</button>
+            <button 
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages || totalPages === 0}
+              className="p-1 px-3 border dark:border-slate-800 rounded bg-slate-50 dark:bg-slate-800 disabled:opacity-50 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">Next</button>
+          </div>
         </div>
       </div>
 
@@ -133,6 +173,13 @@ export default function Dashboard() {
         isOpen={!!selectedComplaint} 
         onClose={() => setSelectedComplaint(null)} 
         isAdmin={true} 
+      />
+
+      <AdminResolveModal 
+        complaint={resolvingComplaint} 
+        isOpen={!!resolvingComplaint} 
+        onClose={() => setResolvingComplaint(null)} 
+        onResolve={confirmResolution} 
       />
     </div>
   );

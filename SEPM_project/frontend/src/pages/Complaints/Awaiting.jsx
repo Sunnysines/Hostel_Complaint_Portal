@@ -9,6 +9,8 @@ export default function Awaiting() {
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 5;
 
   useEffect(() => {
     const fetchComplaints = async () => {
@@ -33,6 +35,9 @@ export default function Awaiting() {
     if (status === 'Pending') return 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400';
     return 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'; // In Progress / Acknowledged
   };
+
+  const totalPages = Math.ceil(complaints.length / ITEMS_PER_PAGE);
+  const currentComplaints = complaints.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   const getActionIcon = (status) => {
     if (status === 'Pending') return <span className="material-icons-outlined text-red-500 text-base">cancel</span>;
@@ -77,10 +82,12 @@ export default function Awaiting() {
               ) : complaints.length === 0 ? (
                 <tr><td colSpan="8" className="px-6 py-4 text-center text-slate-500">No awaiting complaints.</td></tr>
               ) : (
-                complaints.map((c, idx) => (
-                  <tr key={c.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-                    <td className="px-6 py-4">{idx + 1 < 10 ? `0${idx + 1}` : idx + 1}</td>
-                    <td 
+                currentComplaints.map((c, idx) => {
+                  const actualIdx = (currentPage - 1) * ITEMS_PER_PAGE + idx + 1;
+                  return (
+                    <tr key={c.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                      <td className="px-6 py-4">{actualIdx < 10 ? `0${actualIdx}` : actualIdx}</td>
+                      <td 
                       className="px-6 py-4 font-mono text-xs font-semibold hover:text-primary cursor-pointer transition-colors"
                       onClick={() => setSelectedComplaint(c)}
                     >
@@ -103,34 +110,34 @@ export default function Awaiting() {
                     </td>
                     <td className="px-6 py-4 text-slate-500 whitespace-nowrap">{formatDate(c.createdAt)}</td>
                     <td className="px-6 py-4 text-right">
-                      {c.status === 'Pending' ? (
-                        <button 
-                          className="text-primary hover:underline font-semibold flex items-center justify-end gap-1 ml-auto"
-                          onClick={() => setSelectedComplaint(c)}
-                        >
-                          View Details
-                        </button>
-                      ) : (
-                        <button 
-                          className="text-primary hover:underline font-semibold flex items-center justify-end gap-1 ml-auto"
-                          onClick={() => setSelectedComplaint(c)}
-                        >
-                          View Details
-                        </button>
-                      )}
+                      <button 
+                        className="text-primary hover:underline font-semibold flex items-center justify-end gap-1 ml-auto"
+                        onClick={() => setSelectedComplaint(c)}
+                      >
+                        Track Status
+                      </button>
                     </td>
                   </tr>
-                ))
+                );
+              })
               )}
             </tbody>
           </table>
         </div>
         <div className="p-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center text-xs text-slate-500">
-          <span>Showing {complaints.length} filtered entries</span>
+          <span>
+            Showing {complaints.length === 0 ? 0 : (currentPage - 1) * ITEMS_PER_PAGE + 1} to {Math.min(currentPage * ITEMS_PER_PAGE, complaints.length)} of {complaints.length} entries
+          </span>
           <div className="flex gap-1">
-            <button className="p-1 px-3 border dark:border-slate-800 rounded bg-slate-50 dark:bg-slate-800 disabled:opacity-50" disabled>Prev</button>
-            <button className="p-1 px-3 border dark:border-slate-800 rounded bg-primary text-white">1</button>
-            <button className="p-1 px-3 border dark:border-slate-800 rounded bg-slate-50 dark:bg-slate-800 disabled:opacity-50" disabled>Next</button>
+            <button 
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="p-1 px-3 border dark:border-slate-800 rounded bg-slate-50 dark:bg-slate-800 disabled:opacity-50 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">Prev</button>
+            <button className="p-1 px-3 border dark:border-slate-800 rounded bg-primary text-white font-semibold">{currentPage}</button>
+            <button 
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages || totalPages === 0}
+              className="p-1 px-3 border dark:border-slate-800 rounded bg-slate-50 dark:bg-slate-800 disabled:opacity-50 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">Next</button>
           </div>
         </div>
       </div>

@@ -9,6 +9,8 @@ export default function Resolved() {
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 5;
 
   useEffect(() => {
     const fetchComplaints = async () => {
@@ -28,9 +30,10 @@ export default function Resolved() {
     return new Date(isoString).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
   };
 
-  const getStatusColor = (status) => {
-    return 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400';
-  };
+  const getStatusColor = () => 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400';
+
+  const totalPages = Math.ceil(complaints.length / ITEMS_PER_PAGE);
+  const currentComplaints = complaints.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   const getActionIcon = (status) => {
     return <span className="material-icons-outlined text-green-500 text-base">check_circle</span>;
@@ -71,12 +74,14 @@ export default function Resolved() {
               {loading ? (
                 <tr><td colSpan="8" className="px-6 py-4 text-center text-slate-500">Loading complaints...</td></tr>
               ) : complaints.length === 0 ? (
-                <tr><td colSpan="8" className="px-6 py-4 text-center text-slate-500">No resolved complaints yet.</td></tr>
+                <tr><td colSpan="8" className="px-6 py-4 text-center text-slate-500">No resolved complaints.</td></tr>
               ) : (
-                complaints.map((c, idx) => (
-                  <tr key={c.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-                    <td className="px-6 py-4">{idx + 1 < 10 ? `0${idx + 1}` : idx + 1}</td>
-                    <td 
+                currentComplaints.map((c, idx) => {
+                  const actualIdx = (currentPage - 1) * ITEMS_PER_PAGE + idx + 1;
+                  return (
+                    <tr key={c.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                      <td className="px-6 py-4">{actualIdx < 10 ? `0${actualIdx}` : actualIdx}</td>
+                      <td 
                       className="px-6 py-4 font-mono text-xs font-semibold hover:text-primary cursor-pointer transition-colors"
                       onClick={() => setSelectedComplaint(c)}
                     >
@@ -103,21 +108,30 @@ export default function Resolved() {
                         className="text-primary hover:underline font-semibold flex items-center justify-end gap-1 ml-auto"
                         onClick={() => setSelectedComplaint(c)}
                       >
-                        View Details
+                        View Report
                       </button>
                     </td>
                   </tr>
-                ))
+                );
+              })
               )}
             </tbody>
           </table>
         </div>
         <div className="p-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center text-xs text-slate-500">
-          <span>Showing {complaints.length} resolved entries</span>
+          <span>
+            Showing {complaints.length === 0 ? 0 : (currentPage - 1) * ITEMS_PER_PAGE + 1} to {Math.min(currentPage * ITEMS_PER_PAGE, complaints.length)} of {complaints.length} entries
+          </span>
           <div className="flex gap-1">
-            <button className="p-1 px-3 border dark:border-slate-800 rounded bg-slate-50 dark:bg-slate-800 disabled:opacity-50">Prev</button>
-            <button className="p-1 px-3 border dark:border-slate-800 rounded bg-primary text-white">1</button>
-            <button className="p-1 px-3 border dark:border-slate-800 rounded bg-slate-50 dark:bg-slate-800">Next</button>
+            <button 
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="p-1 px-3 border dark:border-slate-800 rounded bg-slate-50 dark:bg-slate-800 disabled:opacity-50 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">Prev</button>
+            <button className="p-1 px-3 border dark:border-slate-800 rounded bg-primary text-white font-semibold">{currentPage}</button>
+            <button 
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages || totalPages === 0}
+              className="p-1 px-3 border dark:border-slate-800 rounded bg-slate-50 dark:bg-slate-800 disabled:opacity-50 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">Next</button>
           </div>
         </div>
       </div>
