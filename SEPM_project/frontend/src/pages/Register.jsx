@@ -56,7 +56,7 @@ export default function Register() {
           <div className="flex flex-col items-center justify-center space-y-2">
             <div className="flex items-center space-x-3">
               <div className="flex items-center justify-center text-white">
-                <img className="mt-1" src="/srm-logo.png" width="275px" height="90px" alt="SRM IST" />
+                <img className="mt-1" src={`${import.meta.env.BASE_URL}srm-logo.png`} width="275px" height="90px" alt="SRM IST" />
               </div>
             </div>
           </div>

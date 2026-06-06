@@ -40,7 +40,7 @@ export default function Navbar({ toggleSidebar }) {
 
           <div className="flex items-center flex-shrink-0">
             <div className="flex flex-col items-center">
-              <img src="/srm-logo.png" alt="SRM" className="h-5 w-auto object-contain" />
+              <img src={`${import.meta.env.BASE_URL}srm-logo.png`} alt="SRM" className="h-5 w-auto object-contain" />
               <div className="text-[10px] text-slate-500 dark:text-slate-400 font-bold tracking-wide mt-0.5">Student Portal</div>
             </div>
           </div>
