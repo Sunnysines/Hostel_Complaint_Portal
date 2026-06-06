@@ -4,6 +4,6 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/UI_prototype/",
+  base: "/Hostel_Complaint_Portal/",
   plugins: [react(), tailwindcss()],
 })
