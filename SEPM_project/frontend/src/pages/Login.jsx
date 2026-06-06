@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { authService } from '../services/authService';
@@ -12,6 +12,20 @@ export default function Login() {
   const [captcha, setCaptcha] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [generatedCaptcha, setGeneratedCaptcha] = useState('');
+
+  const generateRandomCaptcha = () => {
+    const chars = '23456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ';
+    let result = '';
+    for (let i = 0; i < 5; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  };
+
+  useEffect(() => {
+    setGeneratedCaptcha(generateRandomCaptcha());
+  }, []);
   
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,6 +33,18 @@ export default function Login() {
 
     if (!netid || !password) {
       setError('Please enter both NetID and Password.');
+      return;
+    }
+
+    if (!captcha) {
+      setError('Please enter the captcha code.');
+      return;
+    }
+
+    if (captcha.toLowerCase() !== generatedCaptcha.toLowerCase()) {
+      setError('Incorrect captcha code. Please try again.');
+      setGeneratedCaptcha(generateRandomCaptcha());
+      setCaptcha('');
       return;
     }
 
@@ -155,9 +181,17 @@ export default function Login() {
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="bg-gray-100 dark:bg-slate-700 px-4 py-2 rounded border border-gray-200 dark:border-slate-600 font-serif italic text-xl tracking-widest text-red-600 dark:text-red-400 font-bold select-none">
-                      uZhJB
+                      {generatedCaptcha}
                     </div>
-                    <button className="text-gray-400 hover:text-primary transition-colors" type="button">
+                    <button 
+                      className="text-gray-400 hover:text-primary transition-colors cursor-pointer" 
+                      type="button"
+                      onClick={() => {
+                        setGeneratedCaptcha(generateRandomCaptcha());
+                        setCaptcha('');
+                      }}
+                      title="Refresh Captcha"
+                    >
                       <span className="material-icons text-xl">refresh</span>
                     </button>
                   </div>
